@@ -1,6 +1,6 @@
 {
-    "name": "cakemanager/cakephp-notifier",
-    "description": "Notifier plugin for CakePHP",
+    "name": "oxenti/cakephp-notifier",
+    "description": "Oxenti fork from cakemanager Notifier plugin for CakePHP",
     "type": "cakephp-plugin",
     "require": {
         "php": ">=5.4.16",
