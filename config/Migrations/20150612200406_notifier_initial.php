@@ -51,6 +51,14 @@ class NotifierInitial extends AbstractMigration
                 'limit' => 11,
                 'null' => true,
             ])
+            ->addColumn('resource_id', 'integer', [
+                'default' => 0,
+                'limit' => 11,
+            ])
+            ->addColumn('resource_type', 'integer', [
+                'default' => 0,
+                'limit' => 11,
+            ])
             ->addColumn('state', 'integer', [
                 'default' => 1,
                 'limit' => 11,

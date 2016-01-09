@@ -32,7 +32,7 @@ class NotifierComponent extends Component
      * @var array
      */
     protected $_defaultConfig = [
-        'UsersModel' => 'Users'
+        'UsersModel' => 'User.Users'
     ];
 
     /**
@@ -93,7 +93,7 @@ class NotifierComponent extends Component
      * @param bool|null $state The state of notifications: `true` for unread, `false` for read, `null` for all.
      * @return array
      */
-    public function getNotifications($userId = null, $state = null)
+    public function getNotifications($userId = null, $resourceType = null, $state = null)
     {
         if (!$userId) {
             $userId = $this->Controller->Auth->user('id');
@@ -105,6 +105,10 @@ class NotifierComponent extends Component
 
         if (!is_null($state)) {
             $query->where(['Notifications.state' => $state]);
+        }
+
+        if (!is_null($resourceType)) {
+            $query->where(['Notifications.resource_type' => $resourceType]);
         }
 
         return $query->toArray();
@@ -135,7 +139,7 @@ class NotifierComponent extends Component
      * @param bool|null $state The state of notifications: `true` for unread, `false` for read, `null` for all.
      * @return int
      */
-    public function countNotifications($userId = null, $state = null)
+    public function countNotifications($userId = null, $resourceType = null, $state = null)
     {
         if (!$userId) {
             $userId = $this->Controller->Auth->user('id');
@@ -147,6 +151,9 @@ class NotifierComponent extends Component
 
         if (!is_null($state)) {
             $query->where(['Notifications.state' => $state]);
+        }
+        if (!is_null($state)) {
+            $query->where(['Notifications.resource_type' => $resourceType]);
         }
 
         return $query->count();
@@ -182,6 +189,35 @@ class NotifierComponent extends Component
 
             ]);
         }
+
+        foreach ($query as $item) {
+            $item->set('state', 0);
+            $model->save($item);
+        }
+    }
+
+    /**
+     * markAsRead by ResourceId and Type
+     *
+     * Used to mark a notification as read.
+     * If no notificationId is given, all notifications of the chosen user will be marked as read.
+     *
+     * @param int $notificationId Id of the notification.
+     * @param int|null $user Id of the user. Else the id of the session will be taken.
+     * @return void
+     */
+    public function markResourceAsRead($resourceId, $resourceType)
+    {
+        $userId = $this->Controller->Auth->user('id');
+
+        $model = TableRegistry::get('Notifier.Notifications');
+
+        $query = $model->find('all')->where([
+            'user_id' => $userId,
+            'resource_id' => $resourceId,
+            'resource_type' => $resourceType,
+            'state' => 1
+        ]);
 
         foreach ($query as $item) {
             $item->set('state', 0);

@@ -36,7 +36,10 @@ class Notification extends Entity
         'user_id' => true,
         'state' => false,
         'user' => false,
+        'target_id' => true,
     ];
+
+    protected $_hidden = ['template', 'vars', 'tracking_id', 'user_id', 'state', 'user', 'modified'];
 
     /**
      * _getVars

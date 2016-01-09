@@ -81,6 +81,8 @@ class NotificationManager
             'users' => [],
             'recipientLists' => [],
             'template' => 'default',
+            'resource_id' => [],
+            'resource_type' => [],
             'vars' => [],
             'tracking_id' => $this->getTrackingId()
         ];
@@ -98,6 +100,8 @@ class NotificationManager
             $entity->set('template', $data['template']);
             $entity->set('tracking_id', $data['tracking_id']);
             $entity->set('vars', $data['vars']);
+            $entity->set('resource_id', $data['resource_id']);
+            $entity->set('resource_type', $data['resource_type']);
             $entity->set('state', 1);
             $entity->set('user_id', $user);
 
