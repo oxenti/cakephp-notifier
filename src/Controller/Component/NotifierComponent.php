@@ -220,8 +220,10 @@ class NotifierComponent extends Component
         ]);
 
         foreach ($query as $item) {
-            $item->set('state', 0);
-            $model->save($item);
+            if ($item->state != 0) {
+                $item->set('state', 0);
+                $model->save($item);
+            }
         }
     }
 
